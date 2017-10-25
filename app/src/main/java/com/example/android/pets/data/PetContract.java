@@ -3,14 +3,15 @@ package com.example.android.pets.data;
 import android.provider.BaseColumns;
 
 /**
- * Created by KumaNikuko on 2017/9/26.
+ * Database contract for the Pets app.
+ * Storage the string of constants.
  */
 
 public final class PetContract {
 
     public static final class PetEntry implements BaseColumns {
         public static final String TABLE_NAME = "pets";
-        public static final String _ID = BaseColumns._ID;
+        public static final String _ID = BaseColumns._ID;//貌似在_ID列名称与接口声明一致时可以省略此行
         public static final String COLUMN_PET_NAME = "name";
         public static final String COLUMN_PET_BREED = "breed";
         public static final String COLUMN_PET_GENDER = "gender";
