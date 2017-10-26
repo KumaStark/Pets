@@ -14,18 +14,18 @@ import static com.example.android.pets.data.PetContract.PetEntry;
 
 public class PetDbHelper extends SQLiteOpenHelper {
 
-    //Todo: 2017/10/25  需要了解 LOG_TAG 的用处
+    //TODO: 2017/10/25  需要了解 LOG_TAG 的用处
     public static final String LOG_TAG = PetDbHelper.class.getSimpleName();
 
     /**
      * Name of the database file
      */
-    public static final String DATABASE_NAME = "Pets.db";
+    private static final String DATABASE_NAME = "Pets.db";
 
     /**
      * Database version. If you change the database schema, you must increment the database version.
      */
-    public static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 1;
 
     /**
      * Constructs a new instance of {@link PetDbHelper}.
@@ -41,6 +41,7 @@ public class PetDbHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // CREATE TABLE pets (_id INTEGER, name TEXT, breed TEXT, gender INTEGER, weight INTEGER);
         // Create a String that contains the SQL statement to create the pets table
         String SQL_CREATE_PETS_TABLE = "CREATE TABLE " + PetEntry.TABLE_NAME + " ("
                 + PetEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -48,8 +49,10 @@ public class PetDbHelper extends SQLiteOpenHelper {
                 + PetEntry.COLUMN_PET_BREED + " TEXT, "
                 + PetEntry.COLUMN_PET_GENDER + " INTEGER NOT NULL, "
                 + PetEntry.COLUMN_PET_WEIGHT + " INTEGER NOT NULL DEFAULT 0);";
+
         // Log the create statement
         Log.v(LOG_TAG, SQL_CREATE_PETS_TABLE);
+
         // Execute the SQL statement
         db.execSQL(SQL_CREATE_PETS_TABLE);
     }

@@ -11,7 +11,8 @@ public final class PetContract {
 
     public static final class PetEntry implements BaseColumns {
         public static final String TABLE_NAME = "pets";
-        public static final String _ID = BaseColumns._ID;//貌似在_ID列名称与接口声明一致时可以省略此行
+        // 貌似在_ID列名称与接口声明一致时可以省略此行
+        // public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_PET_NAME = "name";
         public static final String COLUMN_PET_BREED = "breed";
         public static final String COLUMN_PET_GENDER = "gender";
@@ -23,7 +24,4 @@ public final class PetContract {
         public static final int GENDER_MALE = 1;
         public static final int GENDER_FEMALE = 2;
     }
-
-    //CREATE TABLE pets (_id INTEGER, name TEXT, breed TEXT, gender INTEGER, weight INTEGER);
-
 }
