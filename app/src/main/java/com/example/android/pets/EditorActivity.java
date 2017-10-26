@@ -64,8 +64,6 @@ public class EditorActivity extends AppCompatActivity {
      */
     private int mGender = PetEntry.GENDER_UNKNOWN;
 
-    private PetDbHelper mDbHelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,6 +125,8 @@ public class EditorActivity extends AppCompatActivity {
         int weight = Integer.parseInt(weightString);
 
         // Create database helper
+        PetDbHelper mDbHelper = new PetDbHelper(this);
+        // Gets the database in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         // Create a ContentValue to chain columnName with String
         ContentValues values = new ContentValues();
@@ -162,7 +162,7 @@ public class EditorActivity extends AppCompatActivity {
             // Respond to a click on the "Save" menu option
             case R.id.action_save:
                 insertPet();
-                finish();
+                //finish();
                 return true;
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
