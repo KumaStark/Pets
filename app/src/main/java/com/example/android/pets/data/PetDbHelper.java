@@ -14,8 +14,7 @@ import static com.example.android.pets.data.PetContract.PetEntry;
 
 public class PetDbHelper extends SQLiteOpenHelper {
 
-    //TODO: 2017/10/25  需要了解 LOG_TAG 的用处
-    public static final String LOG_TAG = PetDbHelper.class.getSimpleName();
+    private static final String LOG_TAG = PetDbHelper.class.getSimpleName();
 
     /**
      * Name of the database file
