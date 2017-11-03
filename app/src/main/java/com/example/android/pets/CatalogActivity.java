@@ -3,11 +3,10 @@ package com.example.android.pets;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,14 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.pets.data.PetContract.PetEntry;
-import com.example.android.pets.data.PetDbHelper;
 
 /**
  * Displays list of pets that were entered and stored in the app.
  */
 public class CatalogActivity extends AppCompatActivity {
-
-    private PetDbHelper mDbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +34,6 @@ public class CatalogActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        mDbHelper = new PetDbHelper(this);
-        //displayDatabaseInfo();
     }
 
     /**
@@ -50,15 +41,19 @@ public class CatalogActivity extends AppCompatActivity {
      */
     private void insertPet() {
         // Insert a single pet into the database
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(PetEntry.COLUMN_PET_NAME, "Garfield");
         values.put(PetEntry.COLUMN_PET_BREED, "Tabby");
         values.put(PetEntry.COLUMN_PET_GENDER, PetEntry.GENDER_MALE);
         values.put(PetEntry.COLUMN_PET_WEIGHT, 7);
-        long newRowID = db.insert(PetEntry.TABLE_NAME, null, values);
-        Log.v("newRowID=", newRowID + "");
-        Toast.makeText(this, "New Pet added in row: " + newRowID, Toast.LENGTH_SHORT);
+
+        Uri uri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+
+        if (uri == null) {
+            Toast.makeText(this, getString(R.string.insert_dummy_failed), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, getString(R.string.insert_dummy_successful), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -67,12 +62,8 @@ public class CatalogActivity extends AppCompatActivity {
      */
     private void displayDatabaseInfo() {
 
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
         // Perform this raw SQL query "SELECT * FROM pets"
         // to get a Cursor that contains all rows from the pets table.
-        //Cursor cursor = db.rawQuery("SELECT * FROM " + PetEntry.TABLE_NAME, null);
 
         String[] projection = {
                 PetEntry._ID,
@@ -82,10 +73,7 @@ public class CatalogActivity extends AppCompatActivity {
                 PetEntry.COLUMN_PET_WEIGHT
         };
 
-        String selection = "=?";
-        String[] selectionArg = {};
-
-        Cursor cursor = db.query(PetEntry.TABLE_NAME, projection, null, null, null, null, null);
+        Cursor cursor = getContentResolver().query(PetEntry.CONTENT_URI, projection, null, null, null);
 
         TextView displayView = (TextView) findViewById(R.id.text_view_pet);
 
